@@ -47,7 +47,7 @@ eval_file = '/mnt/home/dunan/Learn/Tensorflow/SeqGAN/save/eval_file.txt'
 generated_num = 10000
 
 
-def generate_samples(sess, trainable_model, batch_size, generated_num, output_file):
+def generate_samples(sess, trainable_model, batch_size, generated_num, output_file, word_dict):
     # Generate Samples
     generated_samples = []
     for _ in range(int(generated_num / batch_size)):
@@ -55,7 +55,7 @@ def generate_samples(sess, trainable_model, batch_size, generated_num, output_fi
 
     with open(output_file, 'w') as fout:
         for poem in generated_samples:
-            buffer = ' '.join([str(x) for x in poem]) + '\n'
+            buffer = ''.join([str(word_dict[x]) for x in poem]) + '\n'
             fout.write(buffer)
 
 
@@ -111,6 +111,7 @@ def main():
     # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, positive_file)
     gen_data_loader.create_batches(positive_file, SEQ_LENGTH)   # data loader
+    word_dict = gen_data_loader.get_words() # word dict
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
@@ -131,7 +132,7 @@ def main():
     print('Start pre-training discriminator...')
     # Train 3 epoch on the generated data and do this for 50 times
     for _ in range(50):
-        generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
+        generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file, word_dict)
         dis_data_loader.load_train_data(positive_file, negative_file)
         for _ in range(3):
             dis_data_loader.reset_pointer()
@@ -159,7 +160,7 @@ def main():
 
         # Test
         if total_batch % 5 == 0 or total_batch == TOTAL_BATCH - 1:
-            generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
+            generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file, word_dict)
             likelihood_data_loader.create_batches(eval_file)
             """
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
@@ -173,7 +174,7 @@ def main():
 
         # Train the discriminator
         for _ in range(5):
-            generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
+            generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file, word_dict)
             dis_data_loader.load_train_data(positive_file, negative_file)
 
             for _ in range(3):

@@ -32,8 +32,8 @@ class Gen_Data_loader():
                             line = line[seq_length:]
 
         print("Found tokens: ", len(token_text))
-        words = ['_START'] + list(set(self.token))
-        self.word2idx = dict((word, i) for i, word in enumerate(words))
+        self.words = ['_START'] + list(set(self.token))
+        self.word2idx = dict((word, i) for i, word in enumerate(self.words))
         for token in token_text:
             self.token_stream.append([self.word2idx[tok] for tok in token])
         self.num_batch = int(len(self.token_stream) / self.batch_size)
@@ -48,6 +48,9 @@ class Gen_Data_loader():
 
     def reset_pointer(self):
         self.pointer = 0
+
+    def get_words(self):
+        return self.words
 
 
 class Dis_dataloader():
