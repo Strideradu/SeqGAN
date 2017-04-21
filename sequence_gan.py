@@ -107,7 +107,7 @@ def main():
 
     # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, positive_file)
-    gen_data_loader.create_batches(poem)   # data loader
+    gen_data_loader.create_batches(poem, SEQ_LENGTH)   # data loader
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
@@ -117,7 +117,7 @@ def main():
         loss = pre_train_epoch(sess, generator, gen_data_loader)
         if epoch % 5 == 0:
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
-            likelihood_data_loader.create_batches(eval_file)
+            likelihood_data_loader.create_batches(eval_file, SEQ_LENGTH)
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
             print('pre-train epoch ', epoch, 'test_loss ', test_loss)
             buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
