@@ -17,7 +17,7 @@ class Gen_Data_loader():
         with open(data_file, 'r') as f:
             for line in f:
                 line = line.strip()
-                line = line.split()
+                #line = line.split()
                 self.token.extend(list(line))
                 # parse_line = [int(x) for x in line]
                 print(line)
