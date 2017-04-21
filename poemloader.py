@@ -31,6 +31,8 @@ class Gen_Data_loader():
                             line = line[seq_length:]
 
         print("Found tokens: ", len(self.token_stream))
+        words = ['_START'] + list(set(self.token))
+        self.word2idx = dict((word, i) for i, word in enumerate(words))
         self.num_batch = int(len(self.token_stream) / self.batch_size)
         self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
         self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
@@ -39,7 +41,7 @@ class Gen_Data_loader():
     def next_batch(self):
         ret = self.sequence_batch[self.pointer]
         self.pointer = (self.pointer + 1) % self.num_batch
-        return ret
+        return [self.word2idx[tok] for tok in ret]
 
     def reset_pointer(self):
         self.pointer = 0
