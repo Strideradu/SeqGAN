@@ -28,6 +28,7 @@ class Gen_Data_loader():
                         else:
                             line = line[seq_length:]
 
+        print("Found tokens: ", len(self.token_stream))
         self.num_batch = int(len(self.token_stream) / self.batch_size)
         self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
         self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
