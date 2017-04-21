@@ -20,6 +20,7 @@ class Gen_Data_loader():
                 if len(parse_line) == 20:
                     self.token_stream.append(parse_line)
 
+        print("Found tokens: ", len(self.token_stream))
         self.num_batch = int(len(self.token_stream) / self.batch_size)
         self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
         self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
