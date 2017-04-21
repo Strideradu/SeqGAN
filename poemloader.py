@@ -14,6 +14,7 @@ class Gen_Data_loader():
     def create_batches(self, data_file, seq_length):
         self.token_stream = []
         self.token = [] # token for generate word to id dict
+        token_text = []
         with open(data_file, 'r') as f:
             for line in f:
                 line = line.strip()
@@ -24,15 +25,17 @@ class Gen_Data_loader():
                 # print(len(line))
                 if len(line) % seq_length == 0:
                     while True:
-                        self.token_stream.append(list(line[0:seq_length]))
+                        token_text.append(list(line[0:seq_length]))
                         if len(line) == seq_length:
                             break
                         else:
                             line = line[seq_length:]
 
-        print("Found tokens: ", len(self.token_stream))
+        print("Found tokens: ", len(token_text))
         words = ['_START'] + list(set(self.token))
         self.word2idx = dict((word, i) for i, word in enumerate(words))
+        for token in token_text:
+            self.token_stream.append([self.word2idx[tok] for tok in token])
         self.num_batch = int(len(self.token_stream) / self.batch_size)
         self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
         self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
@@ -41,7 +44,7 @@ class Gen_Data_loader():
     def next_batch(self):
         ret = self.sequence_batch[self.pointer]
         self.pointer = (self.pointer + 1) % self.num_batch
-        return [self.word2idx[tok] for tok in ret]
+        return ret
 
     def reset_pointer(self):
         self.pointer = 0
