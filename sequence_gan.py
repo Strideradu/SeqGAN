@@ -55,7 +55,8 @@ def generate_samples(sess, trainable_model, batch_size, generated_num, output_fi
 
     with open(output_file, 'w') as fout:
         for poem in generated_samples:
-            buffer = ''.join([str(word_dict[x]) for x in poem]) + '\n'
+            buffer = ' '.join([str(x) for x in poem]) + '\n'
+            print(''.join([str(word_dict[x]) for x in poem]))
             fout.write(buffer)
 
 
@@ -100,7 +101,7 @@ def main():
     target_params = cPickle.load(open('save/target_params.pkl', "rb"), encoding='latin1')
     # target_lstm = TARGET_LSTM(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN, target_params) # The oracle model
 
-    discriminator = Discriminator(sequence_length=20, num_classes=2, vocab_size=vocab_size, embedding_size=dis_embedding_dim, 
+    discriminator = Discriminator(sequence_length=SEQ_LENGTH, num_classes=2, vocab_size=vocab_size, embedding_size=dis_embedding_dim,
                                 filter_sizes=dis_filter_sizes, num_filters=dis_num_filters, l2_reg_lambda=dis_l2_reg_lambda)
 
     config = tf.ConfigProto()
@@ -112,6 +113,7 @@ def main():
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, positive_file)
     gen_data_loader.create_batches(positive_file, SEQ_LENGTH)   # data loader
     word_dict = gen_data_loader.get_words() # word dict
+    word2idx = gen_data_loader.get_word2idx()
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
@@ -120,7 +122,7 @@ def main():
     for epoch in range(PRE_EPOCH_NUM):
         loss = pre_train_epoch(sess, generator, gen_data_loader)
         if epoch % 5 == 0:
-            generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
+            generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file, word_dict)
             likelihood_data_loader.create_batches(eval_file, SEQ_LENGTH)
             """
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
@@ -133,7 +135,7 @@ def main():
     # Train 3 epoch on the generated data and do this for 50 times
     for _ in range(50):
         generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file, word_dict)
-        dis_data_loader.load_train_data(positive_file, negative_file)
+        dis_data_loader.load_train_data(positive_file, negative_file, SEQ_LENGTH, word2idx)
         for _ in range(3):
             dis_data_loader.reset_pointer()
             for it in range(dis_data_loader.num_batch):
@@ -161,7 +163,7 @@ def main():
         # Test
         if total_batch % 5 == 0 or total_batch == TOTAL_BATCH - 1:
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file, word_dict)
-            likelihood_data_loader.create_batches(eval_file)
+            likelihood_data_loader.create_batches(eval_file, SEQ_LENGTH)
             """
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
             buffer = 'epoch:\t' + str(total_batch) + '\tnll:\t' + str(test_loss) + '\n'
@@ -175,7 +177,7 @@ def main():
         # Train the discriminator
         for _ in range(5):
             generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file, word_dict)
-            dis_data_loader.load_train_data(positive_file, negative_file)
+            dis_data_loader.load_train_data(positive_file, negative_file, SEQ_LENGTH, word2idx)
 
             for _ in range(3):
                 dis_data_loader.reset_pointer()

@@ -52,6 +52,9 @@ class Gen_Data_loader():
     def get_words(self):
         return self.words
 
+    def get_word2idx(self):
+        return self.word2idx
+
 
 class Dis_dataloader():
     def __init__(self, batch_size):
@@ -59,22 +62,29 @@ class Dis_dataloader():
         self.sentences = np.array([])
         self.labels = np.array([])
 
-    def load_train_data(self, positive_file, negative_file):
+    def load_train_data(self, positive_file, negative_file, seq_length, word2idx):
         # Load data
         positive_examples = []
         negative_examples = []
         with open(positive_file)as fin:
             for line in fin:
                 line = line.strip()
-                line = line.split()
-                parse_line = [int(x) for x in line]
-                positive_examples.append(parse_line)
+                #line = line.split()
+                #parse_line = [int(x) for x in line]
+                if len(line) % seq_length == 0:
+                    while True:
+                        positive_examples.append([word2idx[tok] for tok in list(line[0:seq_length])])
+                        if len(line) == seq_length:
+                            break
+                        else:
+                            line = line[seq_length:]
+
         with open(negative_file)as fin:
             for line in fin:
                 line = line.strip()
                 line = line.split()
                 parse_line = [int(x) for x in line]
-                if len(parse_line) == 20:
+                if len(parse_line) == seq_length:
                     negative_examples.append(parse_line)
         self.sentences = np.array(positive_examples + negative_examples)
 
