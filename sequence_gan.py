@@ -17,7 +17,7 @@ import pickle as cPickle
 ######################################################################################
 EMB_DIM = 32 # embedding dimension
 HIDDEN_DIM = 32 # hidden state dimension of lstm cell
-SEQ_LENGTH = 20 # sequence length
+SEQ_LENGTH = 24 # sequence length
 START_TOKEN = 0
 PRE_EPOCH_NUM = 120 # supervise (maximum likelihood estimation) epochs
 SEED = 88
@@ -110,7 +110,7 @@ def main():
 
     # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, positive_file)
-    gen_data_loader.create_batches(poem, SEQ_LENGTH)   # data loader
+    gen_data_loader.create_batches(positive_file, SEQ_LENGTH)   # data loader
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
