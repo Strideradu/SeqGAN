@@ -20,6 +20,8 @@ class Gen_Data_loader():
                 line = line.split()
                 self.token.extend(list(line))
                 # parse_line = [int(x) for x in line]
+                print(line)
+                print(len(line))
                 if len(line) % seq_length == 0:
                     while True:
                         self.token_stream.append(list(line[0:seq_length]))
