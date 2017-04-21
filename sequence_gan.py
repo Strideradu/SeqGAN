@@ -37,10 +37,13 @@ dis_batch_size = 64
 #  Basic Training Parameters
 #########################################################################################
 TOTAL_BATCH = 800
-positive_file = 'save/real_data.txt'
-negative_file = 'save/generator_sample.txt'
-eval_file = 'save/eval_file.txt'
-poem = 'Data/wuyanjueju.txt'
+#positive_file = 'save/real_data.txt'
+#negative_file = 'save/generator_sample.txt'
+#eval_file = 'save/eval_file.txt'
+#poem = 'Data/wuyanjueju.txt'
+positive_file = "/mnt/home/dunan/Learn/Tensorflow/SeqGAN/Data/wuyanjueju.txt"
+negative_file = '/mnt/home/dunan/Learn/Tensorflow/SeqGAN/save/generator_sample.txt'
+eval_file = '/mnt/home/dunan/Learn/Tensorflow/SeqGAN/save/eval_file.txt'
 generated_num = 10000
 
 
