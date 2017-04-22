@@ -157,6 +157,7 @@ def main():
     log.write('adversarial training...\n')
     for total_batch in range(TOTAL_BATCH):
         # Train the generator for one step
+        print("Batch: ", total_batch)
         for it in range(1):
             samples = generator.generate(sess)
             rewards = rollout.get_reward(sess, samples, 16, discriminator)
