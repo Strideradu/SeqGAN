@@ -94,7 +94,12 @@ def main():
 
     gen_data_loader = Poem_Data_loader(BATCH_SIZE)
     likelihood_data_loader = Gen_Data_loader(BATCH_SIZE) # For testing
-    vocab_size = 5000
+
+    vocab_size = gen_data_loader.create_batches(positive_file, SEQ_LENGTH)   # data loader
+    word_dict = gen_data_loader.get_words() # word dict
+    word2idx = gen_data_loader.get_word2idx()
+
+    #vocab_size = 5000
     dis_data_loader = Dis_dataloader(BATCH_SIZE)
 
     generator = Generator(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN)
@@ -111,9 +116,7 @@ def main():
 
     # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, positive_file)
-    gen_data_loader.create_batches(positive_file, SEQ_LENGTH)   # data loader
-    word_dict = gen_data_loader.get_words() # word dict
-    word2idx = gen_data_loader.get_word2idx()
+
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
