@@ -118,7 +118,7 @@ def main():
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, positive_file)
 
 
-    log = open('save/experiment-log.txt', 'w')
+    log = open("/mnt/home/dunan/Learn/Tensorflow/SeqGAN/save/experiment-log.txt", 'w')
     #  pre-train generator
     print('Start pre-training...')
     log.write('pre-training...\n')
