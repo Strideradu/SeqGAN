@@ -16,8 +16,8 @@ import pickle as cPickle
 #  Generator  Hyper-parameters
 ######################################################################################
 EMB_DIM = 32 # embedding dimension
-HIDDEN_DIM = 32 # hidden state dimension of lstm cell
-SEQ_LENGTH = 24 # sequence length
+HIDDEN_DIM = 64 # hidden state dimension of lstm cell
+SEQ_LENGTH = 32 # sequence length
 START_TOKEN = 0
 PRE_EPOCH_NUM = 120 # supervise (maximum likelihood estimation) epochs
 SEED = 88
@@ -41,7 +41,7 @@ TOTAL_BATCH = 800
 #negative_file = 'save/generator_sample.txt'
 #eval_file = 'save/eval_file.txt'
 #poem = 'Data/wuyanjueju.txt'
-positive_file = "/mnt/home/dunan/Learn/Tensorflow/SeqGAN/Data/wuyan.txt"
+positive_file = "/mnt/home/dunan/Learn/Tensorflow/SeqGAN/Data/qiyan.txt"
 negative_file = '/mnt/home/dunan/Learn/Tensorflow/SeqGAN/save/generator_sample.txt'
 eval_file = '/mnt/home/dunan/Learn/Tensorflow/SeqGAN/save/eval_file.txt'
 generated_num = 10000
