@@ -33,7 +33,6 @@ class Poem_Data_loader():
 
         print("Found tokens: ", len(token_text))
         self.words = ['_START'] + list(set(self.token))
-        print(len(self.words))
         self.word2idx = dict((word, i) for i, word in enumerate(self.words))
         for token in token_text:
             self.token_stream.append([self.word2idx[tok] for tok in token])
@@ -41,6 +40,7 @@ class Poem_Data_loader():
         self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
         self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
         self.pointer = 0
+        return (len(self.words))
 
     def next_batch(self):
         ret = self.sequence_batch[self.pointer]
@@ -61,14 +61,14 @@ class Gen_Data_loader():
         self.batch_size = batch_size
         self.token_stream = []
 
-    def create_batches(self, data_file):
+    def create_batches(self, data_file, seq_length):
         self.token_stream = []
         with open(data_file, 'r') as f:
             for line in f:
                 line = line.strip()
                 line = line.split()
                 parse_line = [int(x) for x in line]
-                if len(parse_line) == 20:
+                if len(parse_line) == seq_length:
                     self.token_stream.append(parse_line)
 
         self.num_batch = int(len(self.token_stream) / self.batch_size)
