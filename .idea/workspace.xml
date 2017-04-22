@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1d5b21a-48d7-4489-ac33-2548eea518bf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/poemloader.py" afterPath="$PROJECT_DIR$/poemloader.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sequence_gan.py" afterPath="$PROJECT_DIR$/sequence_gan.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,8 +20,8 @@
       <file leaf-file-name="sequence_gan.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sequence_gan.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4497">
-              <caret line="184" column="67" lean-forward="true" selection-start-line="184" selection-start-column="67" selection-end-line="184" selection-end-column="67" />
+            <state relative-caret-position="852">
+              <caret line="100" column="6" lean-forward="false" selection-start-line="100" selection-start-column="6" selection-end-line="100" selection-end-column="6" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -538,8 +537,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sequence_gan.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4497">
-          <caret line="184" column="67" lean-forward="true" selection-start-line="184" selection-start-column="67" selection-end-line="184" selection-end-column="67" />
+        <state relative-caret-position="852">
+          <caret line="100" column="6" lean-forward="false" selection-start-line="100" selection-start-column="6" selection-end-line="100" selection-end-column="6" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
