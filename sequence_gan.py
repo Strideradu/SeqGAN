@@ -5,7 +5,7 @@ from __future__ import print_function
 import numpy as np
 import tensorflow as tf
 import random
-from poemloader import Gen_Data_loader, Dis_dataloader
+from poemloader import Gen_Data_loader, Poem_Data_loader, Dis_dataloader
 from generator import Generator
 from discriminator import Discriminator
 from rollout import ROLLOUT
@@ -92,7 +92,7 @@ def main():
     np.random.seed(SEED)
     assert START_TOKEN == 0
 
-    gen_data_loader = Gen_Data_loader(BATCH_SIZE)
+    gen_data_loader = Poem_Data_loader(BATCH_SIZE)
     likelihood_data_loader = Gen_Data_loader(BATCH_SIZE) # For testing
     vocab_size = 5000
     dis_data_loader = Dis_dataloader(BATCH_SIZE)
