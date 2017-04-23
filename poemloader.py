@@ -18,11 +18,7 @@ class Poem_Data_loader():
         with open(data_file, 'r') as f:
             for line in f:
                 line = line.strip()
-                #line = line.split()
                 self.token.extend(list(line))
-                # parse_line = [int(x) for x in line]
-                # print(line)
-                # print(len(line))
                 if len(line) % seq_length == 0:
                     while True:
                         token_text.append(list(line[0:seq_length]))
@@ -30,6 +26,50 @@ class Poem_Data_loader():
                             break
                         else:
                             line = line[seq_length:]
+
+        print("Found tokens: ", len(token_text))
+        self.words = ['_START'] + list(set(self.token))
+        self.word2idx = dict((word, i) for i, word in enumerate(self.words))
+        for token in token_text:
+            self.token_stream.append([self.word2idx[tok] for tok in token])
+        self.num_batch = int(len(self.token_stream) / self.batch_size)
+        self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
+        self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
+        self.pointer = 0
+        return (len(self.words))
+
+    def next_batch(self):
+        ret = self.sequence_batch[self.pointer]
+        self.pointer = (self.pointer + 1) % self.num_batch
+        return ret
+
+    def reset_pointer(self):
+        self.pointer = 0
+
+    def get_words(self):
+        return self.words
+
+    def get_word2idx(self):
+        return self.word2idx
+
+class Ci_Data_loader():
+    def __init__(self, batch_size):
+        self.batch_size = batch_size
+        self.token_stream = []
+        self.word2idx = {}
+
+    def create_batches(self, data_file, seq_length):
+        self.token_stream = []
+        self.token = [] # token for generate word to id dict
+        token_text = []
+        with open(data_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+
+                if len(line) <= seq_length:
+                    line = line + (seq_length - len(line))*"-"  # use special character to mark extra space
+                    self.token.extend(list(line))
+                    token_text.append(list(line))
 
         print("Found tokens: ", len(token_text))
         self.words = ['_START'] + list(set(self.token))
