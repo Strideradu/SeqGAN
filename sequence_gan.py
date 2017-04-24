@@ -17,7 +17,7 @@ import pickle as cPickle
 ######################################################################################
 EMB_DIM = 32 # embedding dimension
 HIDDEN_DIM = 64 # hidden state dimension of lstm cell
-SEQ_LENGTH = 49 # sequence length
+SEQ_LENGTH = 48 # sequence length
 START_TOKEN = 0
 PRE_EPOCH_NUM = 120 # supervise (maximum likelihood estimation) epochs
 SEED = 88
@@ -92,8 +92,8 @@ def main():
     np.random.seed(SEED)
     assert START_TOKEN == 0
 
-    # gen_data_loader = Poem_Data_loader(BATCH_SIZE)
-    gen_data_loader = Ci_Data_loader(BATCH_SIZE)
+    gen_data_loader = Poem_Data_loader(BATCH_SIZE)
+    # gen_data_loader = Ci_Data_loader(BATCH_SIZE)
     likelihood_data_loader = Gen_Data_loader(BATCH_SIZE) # For testing
 
     vocab_size = gen_data_loader.create_batches(positive_file, SEQ_LENGTH)   # data loader
